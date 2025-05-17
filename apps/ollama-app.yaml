@@ -4,7 +4,7 @@ metadata:
   name: repo-app1
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repo-creds
+    argocd.argoproj.io/secret-type: repository
 type: Opaque
 data:
   url: Z2l0QGdpdGh1Yi5jb206ZG90Y29tcm93L2s4cy1vbGxhbWEuZ2l0Cg==
