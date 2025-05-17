@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: repo-app1
+  name: ollama
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
