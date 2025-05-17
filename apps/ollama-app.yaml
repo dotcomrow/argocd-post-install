@@ -4,10 +4,10 @@ metadata:
   name: repo-app1
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    argocd.argoproj.io/secret-type: repo-creds
 type: Opaque
 data:
-  url: Z2l0QGdpdGh1Yi5jb206ZG90Y29tcm93L2s4cy1vbGxhbWEuZ2l0Cg==
+  url: git@github.com:dotcomrow/k8s-ollama.git
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -17,7 +17,7 @@ data:
     5pKON8RjQmbcyfkP70n7AAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
     QFBgc=
     -----END OPENSSH PRIVATE KEY-----
-  insecure: dHJ1ZQ==
+  insecure: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
