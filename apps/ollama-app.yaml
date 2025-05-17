@@ -12,12 +12,28 @@ data:
   insecure: dHJ1ZQ==
 ---
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ollama
+  namespace: argocd
+spec:
+  description: Project for Ollama app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: ollama
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ollama
   namespace: argocd
 spec:
-  project: OLlama
+  project: ollama
   source:
     repoURL: git@github.com:dotcomrow/k8s-ollama.git
     targetRevision: prod
