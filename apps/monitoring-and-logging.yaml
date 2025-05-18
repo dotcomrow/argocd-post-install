@@ -36,6 +36,9 @@ spec:
       kind: '*'
   sourceNamespaces:
     - argocd
+  namespaceResourceWhitelist:
+    - group: argoproj.io
+      kind: Application
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
