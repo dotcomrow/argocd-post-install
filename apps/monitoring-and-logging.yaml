@@ -34,6 +34,8 @@ spec:
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+  sourceNamespaces:
+    - argocd
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
