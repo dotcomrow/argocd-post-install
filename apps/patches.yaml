@@ -45,10 +45,12 @@ spec:
   source:
     repoURL: git@github.com:dotcomrow/k8s-core-patches.git
     targetRevision: prod
-    path: manifests
+    path: nginx-ingress/overlays/prod
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: patches
+    namespace: ingress-nginx
   syncPolicy:
     automated:
       prune: true
