@@ -16,7 +16,7 @@ stringData:
     AAAEClXdqFHLfVzMpZk92NUqUu6pVj+DbL9MOsdv7dCSzb2yHmeI6bOu/5Diq+oCKGvHRW
     DehV4DNoF6UjGpF1+VD6AAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
     QFBgc=
-    -----END OPENSSH PRIVATE KEY----------
+    -----END OPENSSH PRIVATE KEY-----
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
