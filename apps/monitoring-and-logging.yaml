@@ -39,10 +39,8 @@ spec:
     - group: '*'
       kind: '*'
   namespaceResourceWhitelist:
-    - group: ""
-      kind: Secret
-    - group: argoproj.io
-      kind: Application
+    - group: '*'
+      kind: '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
