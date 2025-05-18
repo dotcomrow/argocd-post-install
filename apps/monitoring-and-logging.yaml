@@ -25,7 +25,7 @@ metadata:
   name: logging-and-monitoring
   namespace: argocd
 spec:
-  description: Project for Ollama app
+  description: Project for logging and monitoring app
   sourceRepos:
     - '*'
   destinations:
