@@ -45,7 +45,7 @@ spec:
   source:
     repoURL: git@github.com:dotcomrow/k8s-grafana-metrics.git
     targetRevision: prod
-    path: manifests
+    path: helm-chart
   destination:
     server: https://kubernetes.default.svc
     namespace: logging-and-monitoring
