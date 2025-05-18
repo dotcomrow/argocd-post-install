@@ -28,15 +28,19 @@ spec:
   description: Project for logging and monitoring app
   sourceRepos:
     - '*'
+  sourceNamespaces:
+    - argocd
   destinations:
     - namespace: logging-and-monitoring
+      server: https://kubernetes.default.svc
+    - namespace: argocd
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
-  sourceNamespaces:
-    - argocd
   namespaceResourceWhitelist:
+    - group: ""
+      kind: Secret
     - group: argoproj.io
       kind: Application
 ---
