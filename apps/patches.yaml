@@ -31,6 +31,8 @@ spec:
   destinations:
     - namespace: patches
       server: https://kubernetes.default.svc
+    - namespace: ingress-nginx
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
