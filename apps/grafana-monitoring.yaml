@@ -47,6 +47,8 @@ kind: Application
 metadata:
   name: logging-and-monitoring
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/config-management-plugin: avp
 spec:
   project: logging-and-monitoring
   source:
