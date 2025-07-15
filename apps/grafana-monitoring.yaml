@@ -57,9 +57,6 @@ spec:
     path: manifests
     plugin:
       name: avp
-      generate:
-        command: ["/usr/local/bin/argocd-vault-plugin"]
-        args: ["generate", "."]
   destination:
     server: https://kubernetes.default.svc
     namespace: logging-and-monitoring
