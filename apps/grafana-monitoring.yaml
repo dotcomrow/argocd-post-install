@@ -55,8 +55,8 @@ spec:
     repoURL: git@github.com:dotcomrow/grafana-alloy-monitoring.git
     targetRevision: prod
     path: manifests
-    plugin:
-      name: avp
+    # plugin:
+    #   name: avp
   destination:
     server: https://kubernetes.default.svc
     namespace: logging-and-monitoring
