@@ -48,7 +48,7 @@ metadata:
   name: logging-and-monitoring
   namespace: argocd
   annotations:
-    argocd.argoproj.io/config-management-plugin: avp
+    argocd.argoproj.io/config-management-plugin: avp-v1
 spec:
   project: logging-and-monitoring
   source:
@@ -56,7 +56,7 @@ spec:
     targetRevision: prod
     path: manifests
     plugin:
-      name: avp
+      name: avp-v1
   destination:
     server: https://kubernetes.default.svc
     namespace: logging-and-monitoring
