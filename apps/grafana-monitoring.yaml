@@ -48,15 +48,15 @@ metadata:
   name: logging-and-monitoring
   namespace: argocd
   annotations:
-    argocd.argoproj.io/config-management-plugin: avp
+    argocd.argoproj.io/config-management-plugin: argocd-vault-plugin
 spec:
   project: logging-and-monitoring
   source:
     repoURL: git@github.com:dotcomrow/grafana-alloy-monitoring.git
     targetRevision: prod
     path: manifests
-    # plugin:
-    #   name: avp
+    plugin:
+      name: argocd-vault-plugin
   destination:
     server: https://kubernetes.default.svc
     namespace: logging-and-monitoring
