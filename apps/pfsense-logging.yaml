@@ -40,12 +40,16 @@ kind: Application
 metadata:
   name: pfsense-logging
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/config-management-plugin: avp-v1
 spec:
   project: pfsense-logging
   source:
     repoURL: git@github.com:dotcomrow/k8s-pfsense-logging.git
     targetRevision: prod
     path: manifests
+    plugin:
+      name: avp-v1
   destination:
     server: https://kubernetes.default.svc
     namespace: pfsense-logging
