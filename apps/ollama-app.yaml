@@ -31,6 +31,8 @@ spec:
   destinations:
     - namespace: ollama
       server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
