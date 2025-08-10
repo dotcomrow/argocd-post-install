@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-octileum.git
+  url: git@github.com:dotcomrow/k8s-octelium.git
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -22,14 +22,14 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: octileum
+  name: octelium
   namespace: argocd
 spec:
-  description: Project for Octileum app
+  description: Project for Octelium app
   sourceRepos:
     - '*'
   destinations:
-    - namespace: octileum
+    - namespace: octelium
       server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
@@ -43,14 +43,14 @@ metadata:
   name: octileum
   namespace: argocd
 spec:
-  project: octileum
+  project: octelium
   source:
-    repoURL: git@github.com:dotcomrow/k8s-octileum.git
+    repoURL: git@github.com:dotcomrow/k8s-octelium.git
     targetRevision: prod
     path: manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: octileum
+    namespace: octelium
   syncPolicy:
     automated:
       prune: true
