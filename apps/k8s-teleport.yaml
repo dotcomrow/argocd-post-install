@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: octileum
+  name: k8s-teleport
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-octelium.git
+  url: git@github.com:dotcomrow/k8s-teleport.git
   sshPrivateKey: |
     -----BEGIN OPENSSH PRIVATE KEY-----
     b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACATQwIegBd7SVUiobKpQ16SG5nqAi+ijAUC71ViR3ScXAAAAKhbxFB2W8RQ
-    dgAAAAtzc2gtZWQyNTUxOQAAACATQwIegBd7SVUiobKpQ16SG5nqAi+ijAUC71ViR3ScXA
-    AAAEDhxm6ZyWWIi1xocD3BOYzr+p9o+2OL7eXUm66SEU5QoxNDAh6AF3tJVSKhsqlDXpIb
-    meoCL6KMBQLvVWJHdJxcAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
+    QyNTUxOQAAACD3K6WMRgK9CB16bws8x6WB19GE/sUUKed6FB2hg7AnxQAAAKhy/ri8cv64
+    vAAAAAtzc2gtZWQyNTUxOQAAACD3K6WMRgK9CB16bws8x6WB19GE/sUUKed6FB2hg7AnxQ
+    AAAEB669eJajqHNu67buGsDuJqyEMvlI6yLhOjQkkfJzrHE/crpYxGAr0IHXpvCzzHpYHX
+    0YT+xRQp53oUHaGDsCfFAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
     QFBgc=
     -----END OPENSSH PRIVATE KEY-----
   insecure: "true"
@@ -22,18 +22,16 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: octelium
+  name: k8s-teleport
   namespace: argocd
 spec:
-  description: Project for Octelium app
+  description: Project for k8s-teleport
   sourceRepos:
     - '*'
   destinations:
-    - namespace: octelium
+    - namespace: teleport
       server: https://kubernetes.default.svc
     - namespace: vault
-      server: https://kubernetes.default.svc
-    - namespace: argocd
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
@@ -42,17 +40,21 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: octileum
+  name: k8s-teleport
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/config-management-plugin: avp-v1
 spec:
-  project: octelium
+  project: k8s-teleport
   source:
-    repoURL: git@github.com:dotcomrow/k8s-octelium.git
+    repoURL: git@github.com:dotcomrow/k8s-teleport.git
     targetRevision: prod
     path: manifests
+    plugin:
+      name: avp-v1
   destination:
     server: https://kubernetes.default.svc
-    namespace: octelium
+    namespace: teleport
   syncPolicy:
     automated:
       prune: true
