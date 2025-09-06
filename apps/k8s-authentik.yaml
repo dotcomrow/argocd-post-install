@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authentik
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+type: Opaque
+stringData:
+  url: git@github.com:dotcomrow/k8s-authentik.git
+  sshPrivateKey: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+    QyNTUxOQAAACD14himqUKNZrZJSTbna32ChBOImlCJlD7XmsUEOv3cYQAAAKjHsW9ax7Fv
+    WgAAAAtzc2gtZWQyNTUxOQAAACD14himqUKNZrZJSTbna32ChBOImlCJlD7XmsUEOv3cYQ
+    AAAEBYrtHKtc6HmuKBcNDtDFP5IsNTTBUHFFi7osSFiuZj3vXiGKapQo1mtklJNudrfYKE
+    E4iaUImUPteaxQQ6/dxhAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
+    QFBgc=
+    -----END OPENSSH PRIVATE KEY-----
+  insecure: "true"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  description: Project for authentik app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: authentik
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  project: authentik
+  source:
+    repoURL: git@github.com:dotcomrow/k8s-authentik.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
