@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mcp
+  name: k8s-mcp-service
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
@@ -22,14 +22,14 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: mcp
+  name: k8s-mcp-service
   namespace: argocd
 spec:
-  description: Project for mcp app
+  description: Project for k8s-mcp-service app
   sourceRepos:
     - '*'
   destinations:
-    - namespace: mcp
+    - namespace: k8s-mcp-service
       server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
@@ -40,17 +40,17 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mcp
+  name: k8s-mcp-service
   namespace: argocd
 spec:
-  project: mcp
+  project: k8s-mcp-service
   source:
     repoURL: git@github.com:dotcomrow/k8s-mcp.git
     targetRevision: prod
     path: manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: mcp
+    namespace: k8s-mcp-service
   syncPolicy:
     automated:
       prune: true
