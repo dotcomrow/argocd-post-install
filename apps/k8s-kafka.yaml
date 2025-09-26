@@ -33,6 +33,8 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
+    - namespace: yugabyte
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
