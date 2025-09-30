@@ -48,7 +48,7 @@ spec:
   project: kafka
   source:
     repoURL: git@github.com:dotcomrow/k8s-kafka.git
-    targetRevision: f39f05f9
+    targetRevision: dec9f062
     path: manifests
   destination:
     server: https://kubernetes.default.svc
