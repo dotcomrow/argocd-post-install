@@ -96,22 +96,18 @@ spec:
 
         domain:
           url: "debezium-ui.app.suncoast.systems"
-          scheme: "https"   # (optional, only if the chart uses it elsewhere)
+          scheme: "https"
 
-        # Use the platform's built-in Postgres for Conductor
         database:
           enabled: true
-          # IMPORTANT: must be a STRING, not a table
-          image: "quay.io/debezium/postgres:14-alpine"
+          image: "quay.io/debezium/postgres:14-alpine"   # must be a string
           auth:
             username: "debezium"
             password: "debezium"
             database: "conductor"
-          # keep it ephemeral for now
           persistence:
             enabled: false
 
-        # We already run our own Kafka/Connect/Registry
         kafka:
           enabled: false
         connect:
@@ -119,7 +115,18 @@ spec:
         registry:
           enabled: false
 
-        # Debezium UI (no ingress; you front it with oauth2-proxy)
+        # Stage (web UI)
+        stage:
+          # This is what controls the generated env-config.js
+          envConfig:
+            # Make the UI call the Conductor API via the same host under /api (no mixed content)
+            conductorUrl: "/api"
+
+          # (Optional) If your chart exposes extra envs for the UI container:
+          env:
+            QUARKUS_LOG_LEVEL: "INFO"
+
+        # Debezium UI (classic) - kept disabled since you’re using Platform Stage
         ui:
           fullnameOverride: debezium-ui
           env:
@@ -134,10 +141,13 @@ spec:
           ingress:
             enabled: false
 
-        # Conductor API (no ingress)
+        # Conductor API (no ingress; you route /api to this service via your own Ingress)
         conductor:
           ingress:
             enabled: false
+          env:
+            QUARKUS_HTTP_CORS: "true"
+            QUARKUS_HTTP_CORS_ORIGINS: "https://debezium-ui.app.suncoast.systems"
 
         # Global ingress toggle off (we use our own)
         ingress:
