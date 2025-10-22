@@ -94,6 +94,9 @@ spec:
       values: |
         fullnameOverride: debezium-platform
 
+        domain:
+          url: "https://debezium-ui.app.suncoast.systems"
+
         # Use the platform's built-in Postgres for Conductor
         database:
           enabled: true
