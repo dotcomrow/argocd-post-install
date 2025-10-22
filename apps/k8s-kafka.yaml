@@ -75,6 +75,7 @@ spec:
 # - fullnameOverride keeps names predictable (svc/debezium-platform-ui, etc.).
 # - Keep this separate from your existing standalone Debezium UI so you can A/B.
 # -----------------------------------------------------------------------------
+# --- Debezium Platform UI via Helm (Argo CD) — FIXED values ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -82,71 +83,56 @@ metadata:
   namespace: argocd
 spec:
   project: kafka
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
   source:
     repoURL: https://github.com/debezium/debezium-platform.git
     targetRevision: main
-    path: helm
+    path: helm/debezium-platform
     helm:
-      releaseName: debezium-platform
       values: |
-        fullnameOverride: "debezium-platform"
+        # Keep the chart release name predictable
+        fullnameOverride: debezium-platform
 
-        # --- UI subchart / component options ---
-        ui:
-          enabled: true
-          image:
-            # you can pin to a tag you trust; keeping default the chart provides.
-            # repository and tag can be overridden here if needed:
-            # repository: quay.io/debezium/debezium-ui
-            # tag: "2.5"
-            pullPolicy: IfNotPresent
-          env:
-            # Point the UI at your Connect REST
-            KAFKA_CONNECT_URIS: "http://kafka-connect.kafka.svc.cluster.local:8083"
+        # The chart requires this even if you disable its ingresses
+        domain:
+          url: https://debezium-ui.app.suncoast.systems
 
-            # Make SPA work correctly behind oauth2-proxy / ingress
-            QUARKUS_HTTP_PROXY_PROXY_ADDRESS_FORWARDING: "true"
-
-            # CORS to your public host
-            QUARKUS_HTTP_CORS: "true"
-            QUARKUS_HTTP_CORS_ORIGINS: "https://debezium-ui.app.suncoast.systems"
-
-            # Optional: extra logging while you validate
-            QUARKUS_LOG_LEVEL: "DEBUG"
-
-          service:
-            type: ClusterIP
-            port: 8080
-
-          # If the chart has ingress you want to enable later, you can wire it here.
-          #ingress:
-          #  enabled: true
-          #  className: nginx
-          #  hosts:
-          #    - host: debezium-ui.app.suncoast.systems
-          #      paths:
-          #        - path: /
-          #          pathType: Prefix
-          #  tls:
-          #    - hosts: [debezium-ui.app.suncoast.systems]
-          #      secretName: your-tls-secret
-
-        # Keep other platform components at defaults. If the chart also contains
-        # operator/registry/connect bits, leave them disabled/unchanged here so
-        # they don't collide with your existing stack.
-        #
-        # Example (only if the chart exposes such toggles; safe to include if not present):
+        # Do NOT deploy any broker/connect/registry from the chart
+        kafka:
+          enabled: false
         connect:
           enabled: false
         registry:
           enabled: false
-        kafka:
-          enabled: false
 
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kafka
+        # Platform UI settings
+        ui:
+          # Try to force the UI service name to 'debezium-ui'
+          fullnameOverride: debezium-ui
+          env:
+            KAFKA_CONNECT_URIS: "http://kafka-connect.kafka.svc.cluster.local:8083"
+            QUARKUS_HTTP_PROXY_PROXY_ADDRESS_FORWARDING: "true"
+            QUARKUS_HTTP_CORS: "true"
+            QUARKUS_HTTP_CORS_ORIGINS: "https://debezium-ui.app.suncoast.systems"
+            QUARKUS_LOG_LEVEL: "DEBUG"
+          service:
+            type: ClusterIP
+            port: 8080
+          ingress:
+            enabled: false
+
+        # Conductor is needed by the UI, but we don't want its ingress
+        conductor:
+          ingress:
+            enabled: false
+
+        # In case the chart has any global ingress toggle
+        ingress:
+          enabled: false
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
