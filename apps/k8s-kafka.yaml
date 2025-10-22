@@ -89,17 +89,13 @@ spec:
   source:
     repoURL: https://github.com/debezium/debezium-platform.git
     targetRevision: main
-    path: helm/debezium-platform
+    path: helm                # <-- was helm/debezium-platform
     helm:
       values: |
-        # Keep the chart release name predictable
         fullnameOverride: debezium-platform
-
-        # The chart requires this even if you disable its ingresses
         domain:
           url: https://debezium-ui.app.suncoast.systems
 
-        # Do NOT deploy any broker/connect/registry from the chart
         kafka:
           enabled: false
         connect:
@@ -107,9 +103,7 @@ spec:
         registry:
           enabled: false
 
-        # Platform UI settings
         ui:
-          # Try to force the UI service name to 'debezium-ui'
           fullnameOverride: debezium-ui
           env:
             KAFKA_CONNECT_URIS: "http://kafka-connect.kafka.svc.cluster.local:8083"
@@ -123,16 +117,13 @@ spec:
           ingress:
             enabled: false
 
-        # Conductor is needed by the UI, but we don't want its ingress
         conductor:
           ingress:
             enabled: false
 
-        # In case the chart has any global ingress toggle
         ingress:
           enabled: false
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
