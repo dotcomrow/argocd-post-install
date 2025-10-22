@@ -94,7 +94,20 @@ spec:
       values: |
         fullnameOverride: debezium-platform
 
-        # We run our own Kafka stack
+        # Use the platform's built-in Postgres for Conductor
+        database:
+          enabled: true
+          # IMPORTANT: must be a STRING, not a table
+          image: "quay.io/debezium/postgres:14-alpine"
+          auth:
+            username: "debezium"
+            password: "debezium"
+            database: "conductor"
+          # keep it ephemeral for now
+          persistence:
+            enabled: false
+
+        # We already run our own Kafka/Connect/Registry
         kafka:
           enabled: false
         connect:
@@ -102,22 +115,7 @@ spec:
         registry:
           enabled: false
 
-        # Use bundled Postgres for the Conductor backend (no PV)
-        database:
-          enabled: true
-          image:
-            registry: docker.io
-            repository: bitnami/postgresql
-            tag: 16
-          auth:
-            username: debezium
-            password: debezium
-            database: conductor
-          primary:
-            persistence:
-              enabled: false
-
-        # Debezium UI settings (no ingress; we’ll keep using oauth2-proxy)
+        # Debezium UI (no ingress; you front it with oauth2-proxy)
         ui:
           fullnameOverride: debezium-ui
           env:
@@ -132,16 +130,15 @@ spec:
           ingress:
             enabled: false
 
-        # Conductor API (no ingress; same reasoning)
+        # Conductor API (no ingress)
         conductor:
           ingress:
             enabled: false
 
-        # Global chart ingress toggle (off)
+        # Global ingress toggle off (we use our own)
         ingress:
           enabled: false
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
