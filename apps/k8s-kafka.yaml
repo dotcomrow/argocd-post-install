@@ -95,7 +95,8 @@ spec:
         fullnameOverride: debezium-platform
 
         domain:
-          url: "https://debezium-ui.app.suncoast.systems"
+          url: "debezium-ui.app.suncoast.systems"
+          scheme: "https"   # (optional, only if the chart uses it elsewhere)
 
         # Use the platform's built-in Postgres for Conductor
         database:
