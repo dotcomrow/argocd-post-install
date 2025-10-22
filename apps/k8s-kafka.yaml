@@ -1,3 +1,6 @@
+# -----------------------------------------------------------------------------
+# Argo CD: Git repo secret (unchanged)
+# -----------------------------------------------------------------------------
 apiVersion: v1
 kind: Secret
 metadata:
@@ -19,6 +22,9 @@ stringData:
     -----END OPENSSH PRIVATE KEY-----
   insecure: "true"
 ---
+# -----------------------------------------------------------------------------
+# Argo CD: Project (unchanged)
+# -----------------------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -39,6 +45,9 @@ spec:
     - group: '*'
       kind: '*'
 ---
+# -----------------------------------------------------------------------------
+# Argo CD: Your existing "kafka" application (unchanged)
+# -----------------------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -50,6 +59,90 @@ spec:
     repoURL: git@github.com:dotcomrow/k8s-kafka.git
     targetRevision: prod
     path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+# -----------------------------------------------------------------------------
+# NEW: Argo CD Application to deploy Debezium Platform (Helm) to namespace "kafka"
+# Notes:
+# - Pulls directly from upstream Debezium Platform repo (public).
+# - Uses the chart in /helm with values to point at your Connect and set CORS.
+# - fullnameOverride keeps names predictable (svc/debezium-platform-ui, etc.).
+# - Keep this separate from your existing standalone Debezium UI so you can A/B.
+# -----------------------------------------------------------------------------
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: debezium-platform
+  namespace: argocd
+spec:
+  project: kafka
+  source:
+    repoURL: https://github.com/debezium/debezium-platform.git
+    targetRevision: main
+    path: helm
+    helm:
+      releaseName: debezium-platform
+      values: |
+        fullnameOverride: "debezium-platform"
+
+        # --- UI subchart / component options ---
+        ui:
+          enabled: true
+          image:
+            # you can pin to a tag you trust; keeping default the chart provides.
+            # repository and tag can be overridden here if needed:
+            # repository: quay.io/debezium/debezium-ui
+            # tag: "2.5"
+            pullPolicy: IfNotPresent
+          env:
+            # Point the UI at your Connect REST
+            KAFKA_CONNECT_URIS: "http://kafka-connect.kafka.svc.cluster.local:8083"
+
+            # Make SPA work correctly behind oauth2-proxy / ingress
+            QUARKUS_HTTP_PROXY_PROXY_ADDRESS_FORWARDING: "true"
+
+            # CORS to your public host
+            QUARKUS_HTTP_CORS: "true"
+            QUARKUS_HTTP_CORS_ORIGINS: "https://debezium-ui.app.suncoast.systems"
+
+            # Optional: extra logging while you validate
+            QUARKUS_LOG_LEVEL: "DEBUG"
+
+          service:
+            type: ClusterIP
+            port: 8080
+
+          # If the chart has ingress you want to enable later, you can wire it here.
+          #ingress:
+          #  enabled: true
+          #  className: nginx
+          #  hosts:
+          #    - host: debezium-ui.app.suncoast.systems
+          #      paths:
+          #        - path: /
+          #          pathType: Prefix
+          #  tls:
+          #    - hosts: [debezium-ui.app.suncoast.systems]
+          #      secretName: your-tls-secret
+
+        # Keep other platform components at defaults. If the chart also contains
+        # operator/registry/connect bits, leave them disabled/unchanged here so
+        # they don't collide with your existing stack.
+        #
+        # Example (only if the chart exposes such toggles; safe to include if not present):
+        connect:
+          enabled: false
+        registry:
+          enabled: false
+        kafka:
+          enabled: false
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kafka
