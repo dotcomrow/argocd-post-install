@@ -29,9 +29,7 @@ spec:
   sourceRepos:
     - '*'
   destinations:
-    - namespace: dmn
-      server: https://kubernetes.default.svc
-    - namespace: rules-engine
+    - namespace: drools
       server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
@@ -52,7 +50,7 @@ spec:
     path: manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: rules-engine
+    namespace: drools
   syncPolicy:
     automated:
       prune: true
