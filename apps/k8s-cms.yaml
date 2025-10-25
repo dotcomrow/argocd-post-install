@@ -1,0 +1,68 @@
+# -----------------------------------------------------------------------------
+# Argo CD: Git repo secret (unchanged)
+# -----------------------------------------------------------------------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cms
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+type: Opaque
+stringData:
+  url: git@github.com:dotcomrow/k8s-cms.git
+  sshPrivateKey: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAF3IHOlIIs9B/UcfaZ2vjdOjekZ9ds4bUf3bUMkbGXSQAAAKicrpVqnK6V
+      agAAAAtzc2gtZWQyNTUxOQAAACAF3IHOlIIs9B/UcfaZ2vjdOjekZ9ds4bUf3bUMkbGXSQ
+      AAAEAJNNIhItyzuZmtRgCUOJoyWITVNUuGCOTANejoSJTpvgXcgc6Ugiz0H9Rx9pna+N06
+      N6Rn12zhtR/dtQyRsZdJAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
+      QFBgc=
+      -----END OPENSSH PRIVATE KEY-----
+  insecure: "true"
+---
+# -----------------------------------------------------------------------------
+# Argo CD: Project (unchanged)
+# -----------------------------------------------------------------------------
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cms
+  namespace: argocd
+spec:
+  description: Project for cms app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: cms
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+    - namespace: yugabyte
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+# -----------------------------------------------------------------------------
+# Argo CD: Your existing "kafka" application (unchanged)
+# -----------------------------------------------------------------------------
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cms
+  namespace: argocd
+spec:
+  project: cms
+  source:
+    repoURL: git@github.com:dotcomrow/k8s-cms.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cms
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
