@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: cms
+  name: directus
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
@@ -28,14 +28,14 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: cms
+  name: directus
   namespace: argocd
 spec:
-  description: Project for cms app
+  description: Project for directus app
   sourceRepos:
     - '*'
   destinations:
-    - namespace: cms
+    - namespace: directus
       server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
@@ -51,17 +51,17 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cms
+  name: directus
   namespace: argocd
 spec:
-  project: cms
+  project: directus
   source:
     repoURL: git@github.com:dotcomrow/k8s-cms.git
     targetRevision: prod
     path: manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: cms
+    namespace: directus
   syncPolicy:
     automated:
       prune: true
