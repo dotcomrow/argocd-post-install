@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k8s-api-gateway
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+type: Opaque
+stringData:
+  url: git@github.com:dotcomrow/k8s-api-gateway.git
+  sshPrivateKey: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACAd9GMhu5eqBz/jouDU95smfIahrYV9n2ns4ALHrBoXYgAAAKhO8+8DTvPv
+      AwAAAAtzc2gtZWQyNTUxOQAAACAd9GMhu5eqBz/jouDU95smfIahrYV9n2ns4ALHrBoXYg
+      AAAEBBb+pB4KZjPF+0163nMzm3K8SeQP4txQvHkS4uFII7xR30YyG7l6oHP+Oi4NT3myZ8
+      hqGthX2faezgAsesGhdiAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
+      QFBgc=
+      -----END OPENSSH PRIVATE KEY-----
+  insecure: "true"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: k8s-api-gateway
+  namespace: argocd
+spec:
+  description: Project for k8s-api-gateway app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: k8s-api-gateway
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-api-gateway
+  namespace: argocd
+spec:
+  project: k8s-api-gateway
+  source:
+    repoURL: git@github.com:dotcomrow/k8s-api-gateway.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: k8s-api-gateway
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
