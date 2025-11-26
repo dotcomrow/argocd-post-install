@@ -44,6 +44,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/config-management-plugin: avp-v1
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: yugabyte
   source:
@@ -59,3 +60,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

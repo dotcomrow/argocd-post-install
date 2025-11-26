@@ -42,6 +42,8 @@ kind: Application
 metadata:
   name: k8s-mcp-service
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "99"
 spec:
   project: k8s-mcp-service
   source:
@@ -55,3 +57,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

@@ -42,6 +42,8 @@ kind: Application
 metadata:
   name: rules-engine
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: rules-engine
   source:
@@ -55,3 +57,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

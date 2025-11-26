@@ -53,6 +53,8 @@ kind: Application
 metadata:
   name: kafka
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: kafka
   source:
@@ -66,3 +68,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
