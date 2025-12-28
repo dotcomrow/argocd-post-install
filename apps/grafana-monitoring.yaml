@@ -51,7 +51,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/config-management-plugin: avp-v1
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   project: logging-and-monitoring
   source:

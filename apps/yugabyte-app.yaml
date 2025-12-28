@@ -44,7 +44,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/config-management-plugin: avp-v1
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: yugabyte
   source:
