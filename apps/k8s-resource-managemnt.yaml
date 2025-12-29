@@ -8,7 +8,7 @@ spec:
   sourceRepos:
     - '*'
   destinations:
-    - namespace: resource-management
+    - namespace: k8s-resource-management
       server: https://kubernetes.default.svc
     - namespace: kube-system
       server: https://kubernetes.default.svc
@@ -21,19 +21,17 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: resource-management
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
+  name: k8s-resource-management
+  namespace: k8s-resource-management
 spec:
-  project: resource-management
+  project: k8s-resource-management
   source:
     repoURL: https://github.com/dotcomrow/k8s-resource-management.git
     targetRevision: prod
-    path: manifests
+    path: overlays/safe
   destination:
     server: https://kubernetes.default.svc
-    namespace: resource-management
+    namespace: k8s-resource-management
   syncPolicy:
     automated:
       prune: true
