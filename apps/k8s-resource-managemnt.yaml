@@ -21,19 +21,19 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: k8s-resource-management
+  name: resource-management
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
-  project: k8s-resource-management
+  project: resource-management
   source:
     repoURL: https://github.com/dotcomrow/k8s-resource-management.git
     targetRevision: prod
     path: manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: k8s-resource-management
+    namespace: resource-management
   syncPolicy:
     automated:
       prune: true
