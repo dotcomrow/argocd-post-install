@@ -10,7 +10,9 @@ spec:
   destinations:
     - namespace: k8s-resource-management
       server: https://kubernetes.default.svc
-    - namespace: vault
+    - namespace: kube-system
+      server: https://kubernetes.default.svc
+    - namespace: goldilocks
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
