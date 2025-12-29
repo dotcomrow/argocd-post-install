@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-ollama.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACBqBNwGiIUJOh3setVYO53HK+aSjjfEY0Jm3Mn5D+9J+wAAAKhsmuChbJrg
-    oQAAAAtzc2gtZWQyNTUxOQAAACBqBNwGiIUJOh3setVYO53HK+aSjjfEY0Jm3Mn5D+9J+w
-    AAAEAYFHUyrjP0uLFxPueEXkdGWS+cH3SFFHGttZ93K3sJsWoE3AaIhQk6Hex61Vg7nccr
-    5pKON8RjQmbcyfkP70n7AAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-ollama.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: ollama
   source:
-    repoURL: git@github.com:dotcomrow/k8s-ollama.git
+    repoURL: https://github.com/dotcomrow/k8s-ollama.git
     targetRevision: prod
     path: manifests
   destination:

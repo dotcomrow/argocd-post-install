@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-rules-engine.git
-  sshPrivateKey: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-      QyNTUxOQAAACCVnbkK9GhWEEAo2DntVk+peIPzqmYDgyo20Y6NJDSLiwAAAKg57ZC6Oe2Q
-      ugAAAAtzc2gtZWQyNTUxOQAAACCVnbkK9GhWEEAo2DntVk+peIPzqmYDgyo20Y6NJDSLiw
-      AAAEC0d584c7F9kUaUJm6+7JIHsjb+jSVOC4Ab7nbwWVXqUZWduQr0aFYQQCjYOe1WT6l4
-      g/OqZgODKjbRjo0kNIuLAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-      QFBgc=
-      -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-rules-engine.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: rules-engine
   source:
-    repoURL: git@github.com:dotcomrow/k8s-rules-engine.git
+    repoURL: https://github.com/dotcomrow/k8s-rules-engine.git
     targetRevision: prod
     path: manifests
   destination:

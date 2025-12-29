@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-pfsense-logging.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACDOehRQ3tJ9j80dFiiz2xyxcCds2YSU8kU7gYxsbyvdrAAAAKhPd1fUT3dX
-    1AAAAAtzc2gtZWQyNTUxOQAAACDOehRQ3tJ9j80dFiiz2xyxcCds2YSU8kU7gYxsbyvdrA
-    AAAEDIdWiYk9UfPy1BujU/Xor2UMb48Wgsg7XftMH04tuNAs56FFDe0n2PzR0WKLPbHLFw
-    J2zZhJTyRTuBjGxvK92sAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-pfsense-logging.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -46,7 +37,7 @@ metadata:
 spec:
   project: pfsense-logging
   source:
-    repoURL: git@github.com:dotcomrow/k8s-pfsense-logging.git
+    repoURL: https://github.com/dotcomrow/k8s-pfsense-logging.git
     targetRevision: prod
     path: manifests
     plugin:

@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-redis.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACDXz+SGj7UTPRAw5H2gi1Q67WzgU4gZeqmiDSDjNay4TgAAAKh2og22dqIN
-    tgAAAAtzc2gtZWQyNTUxOQAAACDXz+SGj7UTPRAw5H2gi1Q67WzgU4gZeqmiDSDjNay4Tg
-    AAAEDXxwfX71QHfTGpS3MIkd6I7Ee8C3yV1Y5f2cdjypjUXdfP5IaPtRM9EDDkfaCLVDrt
-    bOBTiBl6qaINIOM1rLhOAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-redis.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: redis
   source:
-    repoURL: git@github.com:dotcomrow/k8s-redis.git
+    repoURL: https://github.com/dotcomrow/k8s-redis.git
     targetRevision: prod
     path: manifests
   destination:

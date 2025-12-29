@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-mcp.git
-  sshPrivateKey: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-      QyNTUxOQAAACB4tfMQkpoo5YryccL0E0n6T677n0Wu7AVx4N4zcXDOagAAAKgH8HpCB/B6
-      QgAAAAtzc2gtZWQyNTUxOQAAACB4tfMQkpoo5YryccL0E0n6T677n0Wu7AVx4N4zcXDOag
-      AAAEBoUY5Qb9TQbCcxs7dSRNY4uHSDfq7zvwc09jaY8HCptHi18xCSmijlivJxwvQTSfpP
-      rvufRa7sBXHg3jNxcM5qAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-      QFBgc=
-      -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-mcp.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: k8s-mcp-service
   source:
-    repoURL: git@github.com:dotcomrow/k8s-mcp.git
+    repoURL: https://github.com/dotcomrow/k8s-mcp.git
     targetRevision: prod
     path: manifests
   destination:

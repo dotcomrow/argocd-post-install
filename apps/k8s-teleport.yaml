@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-teleport.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACD3K6WMRgK9CB16bws8x6WB19GE/sUUKed6FB2hg7AnxQAAAKhy/ri8cv64
-    vAAAAAtzc2gtZWQyNTUxOQAAACD3K6WMRgK9CB16bws8x6WB19GE/sUUKed6FB2hg7AnxQ
-    AAAEB669eJajqHNu67buGsDuJqyEMvlI6yLhOjQkkfJzrHE/crpYxGAr0IHXpvCzzHpYHX
-    0YT+xRQp53oUHaGDsCfFAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-teleport.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -48,7 +39,7 @@ metadata:
 spec:
   project: k8s-teleport
   source:
-    repoURL: git@github.com:dotcomrow/k8s-teleport.git
+    repoURL: https://github.com/dotcomrow/k8s-teleport.git
     targetRevision: prod
     path: manifests
     plugin:

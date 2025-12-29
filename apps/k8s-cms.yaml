@@ -10,16 +10,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-cms.git
-  sshPrivateKey: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-      QyNTUxOQAAACAF3IHOlIIs9B/UcfaZ2vjdOjekZ9ds4bUf3bUMkbGXSQAAAKicrpVqnK6V
-      agAAAAtzc2gtZWQyNTUxOQAAACAF3IHOlIIs9B/UcfaZ2vjdOjekZ9ds4bUf3bUMkbGXSQ
-      AAAEAJNNIhItyzuZmtRgCUOJoyWITVNUuGCOTANejoSJTpvgXcgc6Ugiz0H9Rx9pna+N06
-      N6Rn12zhtR/dtQyRsZdJAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-      QFBgc=
-      -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-cms.git
   insecure: "true"
 ---
 # -----------------------------------------------------------------------------
@@ -58,7 +49,7 @@ metadata:
 spec:
   project: directus
   source:
-    repoURL: git@github.com:dotcomrow/k8s-cms.git
+    repoURL: https://github.com/dotcomrow/k8s-cms.git
     targetRevision: prod
     path: manifests
   destination:

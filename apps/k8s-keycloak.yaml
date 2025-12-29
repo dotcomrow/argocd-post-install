@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-keycloak.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACBsKs3oOa/UG0u/zHGYbsaXofaq+UG7JRGqmn1N9a6bsgAAAKjDGoc1wxqH
-    NQAAAAtzc2gtZWQyNTUxOQAAACBsKs3oOa/UG0u/zHGYbsaXofaq+UG7JRGqmn1N9a6bsg
-    AAAEChgEbSyzjR1eUgJUADIbMRm23nEnVaqBGv4utgzRyAyGwqzeg5r9QbS7/McZhuxpeh
-    9qr5QbslEaqafU31rpuyAAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-keycloak.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: keycloak
   source:
-    repoURL: git@github.com:dotcomrow/k8s-keycloak.git
+    repoURL: https://github.com/dotcomrow/k8s-keycloak.git
     targetRevision: prod
     path: manifests
   destination:

@@ -7,16 +7,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 type: Opaque
 stringData:
-  url: git@github.com:dotcomrow/k8s-core-patches.git
-  sshPrivateKey: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-    QyNTUxOQAAACCXBlsdHDOjhLVtVEHSAf3SxEt7EkZCda8xUv2eLMJN+wAAAKg3Npe1NzaX
-    tQAAAAtzc2gtZWQyNTUxOQAAACCXBlsdHDOjhLVtVEHSAf3SxEt7EkZCda8xUv2eLMJN+w
-    AAAEDmVmKzopPwhplPz+3eBaav9khGHmewgvIhOFiMvGDgOZcGWx0cM6OEtW1UQdIB/dLE
-    S3sSRkJ1rzFS/Z4swk37AAAAHmFkbWluaXN0cmF0b3JAc3VuY29hc3Quc3lzdGVtcwECAw
-    QFBgc=
-    -----END OPENSSH PRIVATE KEY-----
+  url: https://github.com/dotcomrow/k8s-core-patches.git
   insecure: "true"
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -47,7 +38,7 @@ metadata:
 spec:
   project: patches
   source:
-    repoURL: git@github.com:dotcomrow/k8s-core-patches.git
+    repoURL: https://github.com/dotcomrow/k8s-core-patches.git
     targetRevision: prod
     path: nginx-ingress/overlays/prod
     directory:
