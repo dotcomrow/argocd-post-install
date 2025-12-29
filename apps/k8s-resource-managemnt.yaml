@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: k8s-resource-management
+  namespace: argocd
+spec:
+  description: Project for k8s-resource-management app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: k8s-resource-management
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-resource-management
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: k8s-resource-management
+  source:
+    repoURL: https://github.com/dotcomrow/k8s-resource-management.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: k8s-resource-management
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
