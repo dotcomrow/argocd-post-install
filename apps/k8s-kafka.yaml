@@ -1,19 +1,4 @@
 # -----------------------------------------------------------------------------
-# Argo CD: Git repo secret (unchanged)
-# -----------------------------------------------------------------------------
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kafka
-  namespace: argocd
-  labels:
-    argocd.argoproj.io/secret-type: repository
-type: Opaque
-stringData:
-  url: https://github.com/dotcomrow/k8s-kafka.git
-  insecure: "true"
----
-# -----------------------------------------------------------------------------
 # Argo CD: Project (unchanged)
 # -----------------------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
