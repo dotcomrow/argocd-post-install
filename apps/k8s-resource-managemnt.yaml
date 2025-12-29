@@ -8,7 +8,7 @@ spec:
   sourceRepos:
     - '*'
   destinations:
-    - namespace: k8s-resource-management
+    - namespace: resource-management
       server: https://kubernetes.default.svc
     - namespace: kube-system
       server: https://kubernetes.default.svc
