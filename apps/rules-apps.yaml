@@ -29,7 +29,7 @@ spec:
   project: rules-apps
   source:
     repoURL: https://github.com/dotcomrow/rules-apps.git
-    targetRevision: main
+    targetRevision: prod
     path: manifests
   destination:
     server: https://kubernetes.default.svc
