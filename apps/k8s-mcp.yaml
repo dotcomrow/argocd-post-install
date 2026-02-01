@@ -1,74 +1,74 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: AppProject
-# metadata:
-#   name: k8s-mcp-service
-#   namespace: argocd
-# spec:
-#   description: Project for k8s-mcp-service app
-#   sourceRepos:
-#     - '*'
-#   destinations:
-#     - namespace: k8s-mcp-service
-#       server: https://kubernetes.default.svc
-#     - namespace: vault
-#       server: https://kubernetes.default.svc
-#   clusterResourceWhitelist:
-#     - group: '*'
-#       kind: '*'
-# ---
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: k8s-mcp-service
-#   namespace: argocd
-#   annotations:
-#     argocd.argoproj.io/sync-wave: "9"
-# spec:
-#   project: k8s-mcp-service
-#   source:
-#     repoURL: https://github.com/dotcomrow/k8s-mcp.git
-#     targetRevision: prod
-#     path: manifests
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: k8s-mcp-service
-#   ignoreDifferences:
-#     - group: apps
-#       kind: Deployment
-#       jqPathExpressions:
-#         - .spec.template.spec.containers[].resources
-#         - .spec.template.spec.initContainers[].resources
-#     - group: apps
-#       kind: StatefulSet
-#       jqPathExpressions:
-#         - .spec.template.spec.containers[].resources
-#         - .spec.template.spec.initContainers[].resources
-#     - group: apps
-#       kind: DaemonSet
-#       jqPathExpressions:
-#         - .spec.template.spec.containers[].resources
-#         - .spec.template.spec.initContainers[].resources
-#     - group: batch
-#       kind: Job
-#       jqPathExpressions:
-#         - .spec.template.spec.containers[].resources
-#         - .spec.template.spec.initContainers[].resources
-#     - group: batch
-#       kind: CronJob
-#       jqPathExpressions:
-#         - .spec.jobTemplate.spec.template.spec.containers[].resources
-#         - .spec.jobTemplate.spec.template.spec.initContainers[].resources
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: k8s-mcp-service
+  namespace: argocd
+spec:
+  description: Project for k8s-mcp-service app
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: k8s-mcp-service
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-mcp-service
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  project: k8s-mcp-service
+  source:
+    repoURL: https://github.com/dotcomrow/k8s-mcp.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: k8s-mcp-service
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: apps
+      kind: StatefulSet
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: apps
+      kind: DaemonSet
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: batch
+      kind: Job
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: batch
+      kind: CronJob
+      jqPathExpressions:
+        - .spec.jobTemplate.spec.template.spec.containers[].resources
+        - .spec.jobTemplate.spec.template.spec.initContainers[].resources
 
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#     - PrunePropagationPolicy=foreground
-#     - PruneLast=true
-#     retry:
-#       limit: 5
-#       backoff:
-#         duration: 5s
-#         factor: 2
-#         maxDuration: 3m
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
