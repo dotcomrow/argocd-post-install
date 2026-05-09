@@ -10,8 +10,6 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
-    - namespace: kafka
-      server: https://kubernetes.default.svc
     - namespace: dataflow
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
