@@ -13,6 +13,8 @@ spec:
   destinations:
     - namespace: kafka
       server: https://kubernetes.default.svc
+    - namespace: dataflow
+      server: https://kubernetes.default.svc
     - namespace: vault
       server: https://kubernetes.default.svc
     - namespace: yugabyte
