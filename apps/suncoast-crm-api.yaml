@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: crm
+  namespace: argocd
+spec:
+  description: Project for the Suncoast CRM API
+  sourceRepos:
+    - https://github.com/dotcomrow/suncoast-crm-api.git
+  destinations:
+    - namespace: crm
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: suncoast-crm-api
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: crm
+  source:
+    repoURL: https://github.com/dotcomrow/suncoast-crm-api.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crm
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: batch
+      kind: Job
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: batch
+      kind: CronJob
+      jqPathExpressions:
+        - .spec.jobTemplate.spec.template.spec.containers[].resources
+        - .spec.jobTemplate.spec.template.spec.initContainers[].resources
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
