@@ -63,6 +63,9 @@ spec:
         - .spec.jobTemplate.spec.template.spec.initContainers[].resources
 
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
     - PrunePropagationPolicy=foreground
     - PruneLast=true
