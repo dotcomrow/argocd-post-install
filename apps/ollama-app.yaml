@@ -35,6 +35,7 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: Deployment
+      name: ollama
       jqPathExpressions:
         - .spec.template.spec.containers[].resources
         - .spec.template.spec.initContainers[].resources
