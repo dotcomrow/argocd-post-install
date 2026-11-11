@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: research-apps
+  namespace: argocd
+spec:
+  description: Research platform data and runtime applications
+  sourceRepos:
+    - https://github.com/dotcomrow/research-apps.git
+    - https://github.com/dotcomrow/research-data-platform.git
+    - https://github.com/dotcomrow/research-api.git
+    - https://github.com/dotcomrow/research-collection-service.git
+    - https://github.com/dotcomrow/research-processing-service.git
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: research
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: research-apps
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: research-apps
+  source:
+    repoURL: https://github.com/dotcomrow/research-apps.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 8
+      backoff: { duration: 10s, factor: 2, maxDuration: 5m }
