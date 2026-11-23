@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: discourse
+  namespace: argocd
+spec:
+  description: Suncoast Systems Discourse
+  sourceRepos:
+    - https://github.com/dotcomrow/k8s-discourse.git
+  destinations:
+    - namespace: discourse
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: discourse
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: discourse
+  source:
+    repoURL: https://github.com/dotcomrow/k8s-discourse.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: discourse
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 8
+      backoff: { duration: 10s, factor: 2, maxDuration: 5m }
