@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: user-preferences
+  namespace: argocd
+spec:
+  description: User preferences service and durable database bootstrap
+  sourceRepos:
+    - https://github.com/dotcomrow/user-preferences-service.git
+  destinations:
+    - namespace: user-preferences
+      server: https://kubernetes.default.svc
+    - namespace: vault
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: user-preferences-service
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: user-preferences
+  source:
+    repoURL: https://github.com/dotcomrow/user-preferences-service.git
+    targetRevision: prod
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: user-preferences
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: batch
+      kind: Job
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 8
+      backoff: { duration: 10s, factor: 2, maxDuration: 5m }
